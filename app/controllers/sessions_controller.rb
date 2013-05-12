@@ -1,9 +1,18 @@
 class SessionsController < ApplicationController
   
-  def new
+  def new #automatically goes to create upon submit, passes params hash to method
   end
   
   def create
+    #gets params hash data from #new submit
+    user = User.find_by_email(params[:session][:email])
+    if user and user.authenticate(params[:session][:password])
+      #sign in and redirect
+    else
+      #error and re-rerender new
+      flash.now[:error] = 'Invalid email/password combination'
+      render 'new'
+    end
   end
   
   def destroy
